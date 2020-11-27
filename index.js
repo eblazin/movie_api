@@ -12,33 +12,23 @@ app.use((err, req, res, next) => {
 
 //Task 2.5 express request, Returns a list of ALL movies to the user
 app.get("/movies", (req, res) => {
-  res.json(movies);
+  res.send("Successful GET request returning data on all movies");
 });
 
 // Gets the data about a single movie by title
-app.get("/movies:title", (req, res) => {
-  res.json(
-    movies.find((movie) => {
-      return movie.title === req.params.title;
-    })
-  );
+app.get("/movies/:title", (req, res) => {
+  res.send("Successful GET request returning data on a single movie by title");
 });
 
 //Gets the data about a genre
-app.get("/movies:genre", (req, res) => {
-  res.json(
-    movies.find((genre) => {
-      return movie.genre === req.params.genre;
-    })
-  );
+app.get("/movies/genre/:name", (req, res) => {
+  res.send("Successful GET request returning data on a genre by genre name");
 });
 
 //returns data about a director by name
-app.get("/movies:director_name", (req, res) => {
-  res.json(
-    directors.find((director) => {
-      return req.params.director;
-    })
+app.get("/movies/directors/:name", (req, res) => {
+  res.send(
+    "Successful GET request returning data on a director by name to include bio, birth year, and death year"
   );
 });
 
@@ -48,25 +38,29 @@ app.post("/users", (req, res) => {
 });
 
 //Allows users to update their user info(username)
-app.put("/users:username/about", (req, res) => {
+app.put("/users/:username/about", (req, res) => {
   res.send("Successful PUT request returning updated username information");
 });
 
 //Allows users to add a movie to their favorites
-app.put("/users:username/profile", (req, res) => {
+app.put("/users/:username/favorites", (req, res) => {
   res.send(
-    "Successful PUT request returning information about the favorite movie"
+    "Successful PUT request returning information about the user to include favorite movies"
   );
 });
 
 //Allow users to remove a movie from their favorites
-app.delete("/users:username/profile", (req, res) => {
-  res.send("Successful DELETE request returning a message ");
+app.delete("/users/:username/favorites", (req, res) => {
+  res.send(
+    "Successful DELETE request returning a message indicating the movie was removed "
+  );
 });
 
 //Allows users to deregister
-app.delete("/users:username/profile", (req, res) => {
-  res.send("Successful DELETE request returning a confirmation text message");
+app.delete("/users/:username", (req, res) => {
+  res.send(
+    "Successful DELETE request returning a confirmation text message that the user was deregistered"
+  );
 });
 
 //listen for requests

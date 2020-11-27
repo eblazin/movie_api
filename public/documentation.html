@@ -52,7 +52,7 @@
               Return data about a genre (description) by name/title (e.g.,
               “Thriller”)
             </td>
-            <td>/movies/[genre]</td>
+            <td>/movies/genre/[name]</td>
             <td>GET</td>
             <td>
               <p>None</p>
@@ -68,7 +68,7 @@
             <td>
               Return data about a director (bio, birth year, death year) by name
             </td>
-            <td>/movies/[director_name]</td>
+            <td>/movies/directors/[name]</td>
             <td>GET</td>
             <td>
               <p>None</p>
@@ -113,7 +113,7 @@
               Allow users to add a movie to their list of favorites (showing
               only a text that a movie has been added—more on this later)
             </td>
-            <td>/users/[username]/about</td>
+            <td>/users/[username]/favorites</td>
             <td>PUT</td>
             <td>
               <p>
@@ -134,7 +134,7 @@
               (showing only a text that a movie has been removed—more on this
               later)
             </td>
-            <td>/users/[username]/about</td>
+            <td>/users/[username]/favorites</td>
             <td>DELETE</td>
             <td>
               <p>None</p>
