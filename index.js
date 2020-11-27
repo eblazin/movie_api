@@ -10,9 +10,6 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something Broke!");
 });
 
-app.get("/", (req, res) => {
-  res.send("This is a default textual response of my choosing :)");
-});
 //Task 2.5 express request, Returns a list of ALL movies to the user
 app.get("/movies", (req, res) => {
   res.json(movies);
