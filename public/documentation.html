@@ -1,1 +1,134 @@
-This API builds a server-side component nof the myFlix API
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Documentation for Movie API</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+  </head>
+  <body>
+    This API builds a server-side component of the myFlix API
+    <main>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Request</th>
+            <th>URL</th>
+            <th>HTTP METHOD</th>
+            <th>RESPONSE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Return a list of ALL movies to the user</td>
+            <td>/movies</td>
+            <td>GET</td>
+            <td>
+              <p>A JSON object holding data about all the movies</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Return data (description, genre, director, image URL, whether it’s
+              featured or not) about a single movie by title to the user
+            </td>
+            <td>/movies/[title]</td>
+            <td>GET</td>
+            <td>
+              <p>
+                A JSON object holding data about a single movie, containing a
+                description, genre, director, image url, and whether it's
+                featured or not.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Return data about a genre (description) by name/title (e.g.,
+              “Thriller”)
+            </td>
+            <td>/movies/[genre]</td>
+            <td>GET</td>
+            <td>
+              <p>
+                A JSON object holding data about a genre, containing a
+                description.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Return data about a director (bio, birth year, death year) by name
+            </td>
+            <td>/movies/[director_name]</td>
+            <td>GET</td>
+            <td>
+              <p>
+                A JSON object holding data about a director, containing a bio,
+                birth year, and death year.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Allow new users to register</td>
+            <td>/users</td>
+            <td>POST</td>
+            <td>
+              <p>
+                A JSON object holding data about the new user that was added
+                including a username.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Allow users to update their user info (username)</td>
+            <td>/users/[username]/about</td>
+            <td>PUT</td>
+            <td><p>A text message indicating the user info was updated</p></td>
+          </tr>
+          <tr>
+            <td>
+              Allow users to add a movie to their list of favorites (showing
+              only a text that a movie has been added—more on this later)
+            </td>
+            <td>/users/[username]/profile</td>
+            <td>PUT</td>
+            <td>
+              <p>
+                A JSON object holding data about the movie that was added to
+                favorites.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Allow users to remove a movie from their list of favorites
+              (showing only a text that a movie has been removed—more on this
+              later)
+            </td>
+            <td>/users/[username]/profile</td>
+            <td>DELETE</td>
+            <td>
+              <p>
+                A text message indicating whether the movie was successfully
+                removed from their favorites.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Allow existing users to deregister (showing only a text that a
+              user email has been removed—more on this later)
+            </td>
+            <td>/users/[username]</td>
+            <td>DELETE</td>
+            <td>
+              <p>
+                A text message indicating whether or not the username was
+                deregistered.
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>
