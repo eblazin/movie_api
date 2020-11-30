@@ -43,7 +43,11 @@
               <p>
                 A JSON object holding data about a single movie, containing a
                 description, genre, director, image url, and whether it's
-                featured or not.
+                featured or not. Example: <br />{_id: ObjectId("123"), Title:
+                "Wonder Woman", Description: "...", Genre: {Name:"Action",
+                Description: "..."}, Director: {Name:"Patty
+                Jenkins",Bio:"...",Birth:"..."}, ImagePath: wonderwoman.png,
+                Featured: True}
               </p>
             </td>
           </tr>
@@ -60,13 +64,17 @@
             <td>
               <p>
                 A JSON object holding data about a genre, containing a
-                description.
+                description. Example: <p>{Genre: { Name: "Action",
+                Description: "Action film is a film genre in which the
+                protagonist or protagonists are thrust into a series of events
+                that typically include violence, extended fighting, physical
+                feats, rescues and frantic chases.", }}</p>
               </p>
             </td>
           </tr>
           <tr>
             <td>
-              Return data about a director (bio, birth year, death year) by name
+              Return data about a director (bio, birth year, death year) by name. 
             </td>
             <td>/movies/directors/[name]</td>
             <td>GET</td>
@@ -76,7 +84,9 @@
             <td>
               <p>
                 A JSON object holding data about a director, containing a bio,
-                birth year, and death year.
+                birth year, and death year. Example: <p>{Director: {Name:"Patty
+                  Jenkins",Bio:"...",Birth:"..."}, ImagePath: wonderwoman.png,
+                  Featured: True}</p>
               </p>
             </td>
           </tr>
