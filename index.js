@@ -3,6 +3,19 @@ const express = require("express"),
   morgan = require("morgan");
 const app = express();
 
+//installing models.js using the require() function and installing the mongoose package
+const mongoose = require("mongoose");
+const Models = require("./models.js");
+//creating variables for the models names defined in models.js
+const Movies = Models.Movie;
+const Users = Models.User;
+
+//Connecting mongoose to the [myFlixDB]
+mongoose.connect("mongodb://localhost:27017/[myFlixDB]", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 app.use(express.static("public"));
 app.use(morgan("common"));
 app.use((err, req, res, next) => {

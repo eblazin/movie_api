@@ -24,8 +24,10 @@ let userSchema = mongoose.Schema({
   FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Movie" }],
 });
 
+//creating collections called db.movies and db.users
 let Movie = mongoose.model("Movie", movieSchema);
 let User = mongoose.model("User", userSchema);
 
+//exports the models so they can be used in index.js
 module.exports.Movie = Movie;
 module.exports.User = User;
