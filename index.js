@@ -16,11 +16,16 @@ mongoose.connect("mongodb://localhost:27017/[myFlixDB]", {
   useUnifiedTopology: true,
 });
 
+app.use(Models);
 app.use(express.static("public"));
 app.use(morgan("common"));
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something Broke!");
+});
+
+app.get("/", (req, res) => {
+  res.send("Welcome to myFlix!");
 });
 
 //Task 2.5 express request, Returns a list of ALL movies to the user
@@ -94,15 +99,68 @@ app.get("/users", (req, res) => {
     });
 });
 
-//Allows users to update their user info(username)
-app.put("/users/:username/about", (req, res) => {
-  res.send("Successful PUT request returning updated username information");
+//Get a user by username
+app.get("/users/:Username", (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
-//Allows users to add a movie to their favorites
-app.put("/users/:username/favorites", (req, res) => {
-  res.send(
-    "Successful PUT request returning information about the user to include favorite movies"
+// Update a user's info, by username
+/* We’ll expect JSON in this format
+{
+  Username: String,
+  (required)
+  Password: String,
+  (required)
+  Email: String,
+  (required)
+  Birthday: Date
+}*/
+app.put("/users/:Username", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true }, // This line makes sure that the updated document is returned
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
+});
+
+// Add a movie to a user's list of favorites
+app.post("/users/:Username/Movies/:MovieID", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $push: { FavoriteMovies: req.params.MovieID },
+    },
+    { new: true }, // This line makes sure that the updated document is returned
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
   );
 });
 
@@ -113,11 +171,20 @@ app.delete("/users/:username/favorites", (req, res) => {
   );
 });
 
-//Allows users to deregister
-app.delete("/users/:username", (req, res) => {
-  res.send(
-    "Successful DELETE request returning a confirmation text message that the user was deregistered"
-  );
+// Delete a user by username
+app.delete("/users/:Username", (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.Username + " was not found");
+      } else {
+        res.status(200).send(req.params.Username + " was deleted.");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //listen for requests
