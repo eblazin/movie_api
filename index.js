@@ -1,6 +1,6 @@
 //This installs express using the require() function and installing logging middleware Morgan
-const express = require("express"),
-  morgan = require("morgan");
+const express = require("express");
+const morgan = require("morgan");
 const app = express();
 
 //installing models.js using the require() function and installing the mongoose package
@@ -16,7 +16,6 @@ mongoose.connect("mongodb://localhost:27017/[myFlixDB]", {
   useUnifiedTopology: true,
 });
 
-app.use(Models);
 app.use(express.static("public"));
 app.use(morgan("common"));
 app.use((err, req, res, next) => {
