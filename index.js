@@ -1,14 +1,16 @@
 //This installs express using the require() function and installing logging middleware Morgan
+const mongoose = require("mongoose");
+const Models = require("./models.js");
+const Movies = Models.Movie;
+const Users = Models.User;
+
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
 
 //installing models.js using the require() function and installing the mongoose package
-const mongoose = require("mongoose");
-const Models = require("./models.js");
+
 //creating variables for the models names defined in models.js
-const Movies = Models.Movie;
-const Users = Models.User;
 
 //Connecting mongoose to the [myFlixDB]
 mongoose.connect("mongodb://localhost:27017/[myFlixDB]", {
@@ -99,8 +101,8 @@ app.get("/users", (req, res) => {
 });
 
 //Get a user by username
-app.get("/users/:Username", (req, res) => {
-  Users.findOne({ Username: req.params.Username })
+app.get("/users/:username", (req, res) => {
+  Users.findOne({ username: req.params.username })
     .then((user) => {
       res.json(user);
     })
