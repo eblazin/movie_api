@@ -55,7 +55,7 @@ app.get("/movies/:Title", (req, res) => {
 });
 
 //Gets the data about a genre
-app.get("/movies/genre/:name", (req, res) => {
+app.get("/movies/:genre", (req, res) => {
   Movies.find({ "Genre.Name": req.body.name })
     .then((genre) => {
       res.json(genre);
