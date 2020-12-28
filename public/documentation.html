@@ -98,13 +98,13 @@
               <p>
                 A JSON object holding data about the user to add, structured
                 like:<br />
-                {<br />{
-                  ID: Integer,
-                  Username: String,
-                  Password: String,
-                  Email: String,
-                  Birthdate: Date
-                }}
+                {<br />
+                  username: { type: String, required: true },
+                  password: { type: String, required: true },
+                  email: { type: String, required: true },
+                  Birthday: Date,
+                  FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Movie" }],
+                }
               </p>
             </td>
             <td>
@@ -119,7 +119,12 @@
             <td>/users/[username]/about</td>
             <td>PUT</td>
             <td>
-              <p>None</p>
+              <p>A JSON object holding data about the user to add, structured like: username: { type: String, required: true },
+                password: { type: String, required: true },
+                email: { type: String, required: true },
+                Birthday: Date,
+                FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Movie" }],
+              </p>
             </td>
             <td><p>A text message indicating the user info was updated</p></td>
           </tr>
@@ -133,7 +138,7 @@
             <td>
               <p>
                 A JSON object holding data about the movie to add to favorites,
-                structured like: {favoriteMovie: {title: "Batman"}}
+                structured like: {FavoriteMovies: {title: "Batman"}}
               </p>
             </td>
             <td>

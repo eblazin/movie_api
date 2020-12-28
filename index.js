@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const Movies = Models.Movie;
 const Users = Models.User;
-
+const bodyParser = require("body-parser");
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
@@ -18,6 +18,7 @@ mongoose.connect("mongodb://localhost:27017/[myFlixDB]", {
   useUnifiedTopology: true,
 });
 
+app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(morgan("common"));
 app.use((err, req, res, next) => {
@@ -29,19 +30,40 @@ app.get("/", (req, res) => {
   res.send("Welcome to myFlix!");
 });
 
-//Task 2.5 express request, Returns a list of ALL movies to the user
+//Return a list of ALL movies to the user
 app.get("/movies", (req, res) => {
-  res.send("Successful GET request returning data on all movies");
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
-// Gets the data about a single movie by title
-app.get("/movies/:title", (req, res) => {
-  res.send("Successful GET request returning data on a single movie by title");
+//Return data about a single movie by title to the user
+app.get("/movies/:Title", (req, res) => {
+  Movies.findOne({ Title: req.body.Title })
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Gets the data about a genre
 app.get("/movies/genre/:name", (req, res) => {
-  res.send("Successful GET request returning data on a genre by genre name");
+  Movies.find({ "Genre.Name": req.body.name })
+    .then((genre) => {
+      res.json(genre);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //returns data about a director by name
@@ -55,21 +77,21 @@ app.get("/movies/directors/:name", (req, res) => {
 /* We'll expect JSON in this format
 {
   ID: Integer,
-  Username: String,
-  Password: String,
+  username: String,
+  password: String,
   Email: String,
   Birthdate: Date
 }*/
 
 app.post("/users", (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+  Users.findOne({ username: req.body.Username })
     .then((user) => {
       if (user) {
         return res.status(400).send(req.body.Username + "already exists");
       } else {
         Users.create({
-          Username: req.body.Username,
-          Password: req.body.Password,
+          username: req.body.username,
+          password: req.body.password,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         })
@@ -88,7 +110,7 @@ app.post("/users", (req, res) => {
     });
 });
 
-// Get all users
+//Get all users
 app.get("/users", (req, res) => {
   Users.find()
     .then((users) => {
@@ -102,7 +124,7 @@ app.get("/users", (req, res) => {
 
 //Get a user by username
 app.get("/users/:username", (req, res) => {
-  Users.findOne({ username: req.params.username })
+  Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
     })
@@ -115,21 +137,21 @@ app.get("/users/:username", (req, res) => {
 // Update a user's info, by username
 /* We’ll expect JSON in this format
 {
-  Username: String,
+  username: String,
   (required)
-  Password: String,
+  password: String,
   (required)
   Email: String,
   (required)
   Birthday: Date
 }*/
-app.put("/users/:Username", (req, res) => {
+app.put("/users/:username", (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { username: req.params.username },
     {
       $set: {
-        Username: req.body.Username,
-        Password: req.body.Password,
+        username: req.body.username,
+        password: req.body.password,
         Email: req.body.Email,
         Birthday: req.body.Birthday,
       },
@@ -147,9 +169,9 @@ app.put("/users/:Username", (req, res) => {
 });
 
 // Add a movie to a user's list of favorites
-app.post("/users/:Username/Movies/:MovieID", (req, res) => {
+app.post("/users/:username/Movies/:MovieID", (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { username: req.params.username },
     {
       $push: { FavoriteMovies: req.params.MovieID },
     },
@@ -173,13 +195,13 @@ app.delete("/users/:username/favorites", (req, res) => {
 });
 
 // Delete a user by username
-app.delete("/users/:Username", (req, res) => {
-  Users.findOneAndRemove({ Username: req.params.Username })
+app.delete("/users/:username", (req, res) => {
+  Users.findOneAndRemove({ username: req.params.username })
     .then((user) => {
       if (!user) {
-        res.status(400).send(req.params.Username + " was not found");
+        res.status(400).send(req.params.username + " was not found");
       } else {
-        res.status(200).send(req.params.Username + " was deleted.");
+        res.status(200).send(req.params.username + " was deleted.");
       }
     })
     .catch((err) => {
