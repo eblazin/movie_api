@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
+const passport = require("passport");
+require("./passport.js");
 
 //installing models.js using the require() function and installing the mongoose package
 
@@ -19,6 +21,8 @@ mongoose.connect("mongodb://localhost:27017/[myFlixDB]", {
 });
 
 app.use(bodyParser.json());
+let auth = require("./auth.js")(app);
+
 app.use(express.static("public"));
 app.use(morgan("common"));
 app.use((err, req, res, next) => {
@@ -31,16 +35,20 @@ app.get("/", (req, res) => {
 });
 
 //Return a list of ALL movies to the user
-app.get("/movies", (req, res) => {
-  Movies.find()
-    .then((movies) => {
-      res.status(201).json(movies);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
-});
+app.get(
+  "/movies",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.find()
+      .then((movies) => {
+        res.status(201).json(movies);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
 
 //Return data about a single movie by title to the user
 app.get("/movies/:Title", (req, res) => {
