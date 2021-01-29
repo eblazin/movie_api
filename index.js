@@ -8,7 +8,7 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const passport = require("passport");
-require("./passport.js");
+require("./passport");
 const cors = require("cors");
 const { check, validationResult } = require("express-validator");
 
@@ -30,7 +30,7 @@ mongoose.connect(process.env.CONNECTION_URI, {
 });
 
 app.use(bodyParser.json());
-let auth = require("./auth.js")(app);
+let auth = require("./auth")(app);
 
 app.use(express.static("public"));
 app.use(morgan("common"));
