@@ -40,7 +40,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something Broke!");
 });
 
-let auth = require("./auth")(app);
+let auth = require("./auth.js")(app);
 
 app.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
   res.send("Welcome to myFlix!");
