@@ -8,13 +8,13 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 
-require("./passport");
 const cors = require("cors");
 const { check, validationResult } = require("express-validator");
 
 app.use(cors());
 
 const passport = require("passport");
+require("./passport");
 
 //installing models.js using the require() function and installing the mongoose package
 
