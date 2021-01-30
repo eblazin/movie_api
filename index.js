@@ -7,12 +7,14 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
-const passport = require("passport");
+
 require("./passport");
 const cors = require("cors");
 const { check, validationResult } = require("express-validator");
 
 app.use(cors());
+
+const passport = require("passport");
 
 //installing models.js using the require() function and installing the mongoose package
 
@@ -30,7 +32,6 @@ mongoose.connect(process.env.CONNECTION_URI, {
 });
 
 app.use(bodyParser.json());
-let auth = require("./auth")(app);
 
 app.use(express.static("public"));
 app.use(morgan("common"));
@@ -38,6 +39,8 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something Broke!");
 });
+
+let auth = require("./auth")(app);
 
 app.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
   res.send("Welcome to myFlix!");
