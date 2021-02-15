@@ -173,7 +173,7 @@ app.post(
 //Get all users
 app.get(
   "/users",
-  //passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.find()
       .then((users) => {
@@ -236,7 +236,7 @@ app.put(
       {
         $set: {
           username: req.body.username,
-          password: req.body.password,
+          password: hashedPassword,
           email: req.body.email,
           Birthday: req.body.Birthday,
         },
